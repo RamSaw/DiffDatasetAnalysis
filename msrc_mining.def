@@ -1,16 +1,39 @@
-BootStrap: library
-From: ubuntu:16.04
-
-%post
-    apt-get -y update
-    apt-get -y install fortune cowsay lolcat
+BootStrap: docker
+From: ubuntu:18.04
+IncludeCmd: yes
 
 %environment
-    export LC_ALL=C
-    export PATH=/usr/games:$PATH
+SHELL=/bin/bash
+export SHELL
+
+PATH=/miniconda3/bin:$PATH
+
+%post
+PATH=/miniconda3/bin:$PATH    
+
+apt-get update
+apt-get -y upgrade
+apt-get -y install dialog apt-utils build-essential software-properties-common wget curl
+apt-get -y install git htop
+
+mkdir /tmp_dir
+cd /tmp_dir
+
+#miniconda
+curl -LO "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+bash ./Miniconda3-latest-Linux-x86_64.sh -b -p /miniconda3
+conda install python=3.6.4
+
+#dotnet
+wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb
+
+add-apt-repository universe
+apt-get -y update
+apt-get -y install apt-transport-https
+apt-get -y update
+apt-get -y install dotnet-sdk-2.1=2.1.300-1
 
 %runscript
-    fortune | cowsay | lolcat
+    dotnet --info
 
-%labels
-    Author GodloveD
