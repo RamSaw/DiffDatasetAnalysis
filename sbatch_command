@@ -1,0 +1,1 @@
+sbatch -N1 --ntasks=1 -p gpu-1 -o output/stdout.log -e output/stderr.log run.sh
