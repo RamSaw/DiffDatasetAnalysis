@@ -6,6 +6,9 @@ __pycache__/
 #sif files
 *.sif
 
+#zip files
+*.zip
+
 # C extensions
 *.so
 
